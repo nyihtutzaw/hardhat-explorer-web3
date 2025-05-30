@@ -2,7 +2,11 @@
 
 A user-friendly web interface for interacting with your Hardhat development node. This tool provides a clean UI to view accounts, balances, private keys, and transaction history, making it easier to work with your local Hardhat environment.
 
-![Hardhat Explorer Screenshot](screenshot.png)
+<img width="1588" alt="Screenshot 2568-05-30 at 2 26 51 PM" src="https://github.com/user-attachments/assets/173cc64f-0fd9-4391-b971-55307070b53f" />
+<img width="1588" alt="Screenshot 2568-05-30 at 2 26 59 PM" src="https://github.com/user-attachments/assets/5b082819-4622-40e9-854a-509ebf71a890" />
+<img width="1588" alt="Screenshot 2568-05-30 at 2 26 55 PM" src="https://github.com/user-attachments/assets/59057887-c533-4727-b24c-dd87f0a61421" />
+
+
 
 ## Features
 
