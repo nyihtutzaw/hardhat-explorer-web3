@@ -61,12 +61,26 @@ const useHardhatNode = () => {
         setAccounts(accountsWithDetails);
 
         // Try to get deployed contracts (this is a simple approach, might need adjustment)
-        // In a real app, you might want to track deployed contracts in a better way
-        const code = await nodeProvider.getCode(accounts[0]);
-        if (code !== '0x') {
-          // This is a very basic check and might not work for all cases
-          setContracts([{ name: 'Unknown Contract', address: accounts[0] }]);
-        }
+        // Check all accounts for contracts
+        const contractChecks = accounts.map(async (account) => {
+          const code = await nodeProvider.getCode(account);
+          if (code !== '0x') {
+            return { name: `Contract at ${account.substring(0, 8)}...`, address: account };
+          }
+          return null;
+        });
+
+        const foundContracts = (await Promise.all(contractChecks)).filter((contract): contract is ContractInfo => contract !== null);
+        setContracts(foundContracts);
+        
+        // Add manual contract tracking - you can add your contract here
+        const manualContracts = [
+          {
+            name: 'Donation Contract',
+            address: '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0'
+          }
+        ];
+        setContracts(prev => [...prev, ...manualContracts]);
 
         setIsLoading(false);
       } catch (err) {

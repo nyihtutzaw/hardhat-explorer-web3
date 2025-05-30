@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import { AccountInfo } from '../hooks/useHardhatNode';
 import config from '../config';
+import ContractDetailsModal from './ContractDetailsModal';
 
 interface EthersTransactionResponse {
   hash: string;
@@ -214,6 +215,7 @@ const NodeInfo = ({ accounts, contracts, chainId, blockNumber }: NodeInfoProps) 
   const [activeTab, setActiveTab] = useState<TabType>('signer');
   const [accountDetails, setAccountDetails] = useState<AccountInfo[]>([]);
   const [isLoadingBalances, setIsLoadingBalances] = useState(true);
+  const [selectedContract, setSelectedContract] = useState<string | null>(null);
 
   // Initialize account details with private keys and fetch balances
   useEffect(() => {
@@ -339,12 +341,15 @@ const NodeInfo = ({ accounts, contracts, chainId, blockNumber }: NodeInfoProps) 
         return (
           <div className="space-y-3">
             {contracts.length > 0 ? (
-              contracts.map((contract) => (
-                <div key={contract.address} className="p-4 bg-white rounded-lg shadow-sm">
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="font-medium">{contract.name}</p>
-                    <span className="px-2 py-0.5 text-xs font-medium text-blue-700 bg-blue-100 rounded-full">
-                      Contract
+              contracts.map((contract, index) => (
+                <div 
+                  key={index} 
+                  className="bg-white rounded-lg shadow-sm p-4 mb-2 hover:bg-gray-50 cursor-pointer transition-colors"
+                  onClick={() => setSelectedContract(contract.address)}
+                >
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium">
+                      {contract.name}
                     </span>
                   </div>
                   <div className="flex items-center">
@@ -357,6 +362,12 @@ const NodeInfo = ({ accounts, contracts, chainId, blockNumber }: NodeInfoProps) 
               ))
             ) : (
               <p className="text-gray-500 text-center py-8">No contracts deployed</p>
+            )}
+            {selectedContract && (
+              <ContractDetailsModal 
+                contractAddress={selectedContract} 
+                onClose={() => setSelectedContract(null)} 
+              />
             )}
           </div>
         );
